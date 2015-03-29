@@ -100,18 +100,11 @@ class TodoList
   def delete_task
     print "Which task do you wish to delete? (write it's number)"
     list
-    todos = Todo.get_todos
-
-    print "> "
-    task_to_delete = gets.chomp.strip.to_i
-    todos.delete_at(task_to_delete-1)
-
-    File.open(TodoList.filepath, 'w') do |line|
-      todos.each do |t| puts
-        line.puts "#{t.name}\n"
-      end
+    if Todo.delete_from_list
+      puts "Todo deleted"
+    else
+      puts "Delete error"
     end
-
   end
 
   def welcome_msg

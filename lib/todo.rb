@@ -45,23 +45,20 @@ class Todo
     true
   end
 
-  def delete_from_list
+  def self.delete_from_list
     return false unless TodoList.file_usable?
-    File.open('temp.txt', 'w') do |file|
-      File.foreach(TodoList.filepath) do |line|
-        file.puts line unless line.chomp.strip == out_file.chomp.strip
+    todos = get_todos
+
+    print "> "
+    task_to_delete = gets.chomp.strip.to_i
+    todos.delete_at(task_to_delete-1)
+
+    File.open(TodoList.filepath, 'w') do |line|
+      todos.each do |t|
+        line.puts "#{t.name}\n"
       end
     end
-    # puts out_file
 
-    # out_file do |out_file|
-      # puts out_file
-      # File.foreach(TodoList.filepath) do |line|
-        # out_file.puts line unless line.chomp.strip == out_file.chomp.strip
-      # end
-    # end
-    out_file.close
-    # FileUtils.mv(new_file, TodoList.filepath)
     return true
   end
 
