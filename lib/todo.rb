@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class Todo
   attr_accessor :name, :duedate, :completed
 
@@ -36,11 +38,31 @@ class Todo
   end
 
   def save_to_list
-    return false unless TodoList.list_usable?
+    return false unless TodoList.file_usable?
     File.open(TodoList.filepath, 'a') do |line|
       line.puts "#{@name}\n"
     end
     true
+  end
+
+  def delete_from_list
+    return false unless TodoList.file_usable?
+    File.open('temp.txt', 'w') do |file|
+      File.foreach(TodoList.filepath) do |line|
+        file.puts line unless line.chomp.strip == out_file.chomp.strip
+      end
+    end
+    # puts out_file
+
+    # out_file do |out_file|
+      # puts out_file
+      # File.foreach(TodoList.filepath) do |line|
+        # out_file.puts line unless line.chomp.strip == out_file.chomp.strip
+      # end
+    # end
+    out_file.close
+    # FileUtils.mv(new_file, TodoList.filepath)
+    return true
   end
 
 end

@@ -70,7 +70,7 @@ class TodoList
     when 'add'
       add
     when 'delete'
-      puts "deleting"
+      delete_task
     when 'quit'
       return :quit
     else
@@ -95,6 +95,23 @@ class TodoList
     todos.each_with_index do |todo, i|
       puts "#{i+1}: #{todo.name}"
     end
+  end
+
+  def delete_task
+    print "Which task do you wish to delete? (write it's number)"
+    list
+    todos = Todo.get_todos
+
+    print "> "
+    task_to_delete = gets.chomp.strip.to_i
+    todos.delete_at(task_to_delete-1)
+
+    File.open(TodoList.filepath, 'w') do |line|
+      todos.each do |t| puts
+        line.puts "#{t.name}\n"
+      end
+    end
+
   end
 
   def welcome_msg
